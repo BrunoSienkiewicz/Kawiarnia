@@ -14,7 +14,7 @@ getOrder::getOrder(std::string name, uint time, std::unique_ptr<Menu> menu, std:
     
     this->name = name;
     this->time = time;
-    this->menu = menu;
+    this->menu = std::move(menu);
     this->mealName = mealName;
     if (menu->getMeal(mealName) == nullptr)
         throw std::invalid_argument("Meal not found");
@@ -24,14 +24,14 @@ getOrder::getOrder(std::string name, uint time, std::unique_ptr<Menu> menu, std:
 
 std::unique_ptr<Menu> getOrder::getMenu()
 {
-    return menu;
+    return std::move(menu);
 }
 
 void getOrder::setMenu(std::unique_ptr<Menu> menu)
 {
     if (menu == nullptr)
         throw std::invalid_argument("Menu cannot be empty");
-    this->menu = menu;
+    this->menu = std::move(menu);
 }
 
 std::string getOrder::getMealName()
