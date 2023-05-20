@@ -21,7 +21,6 @@ class PrepareMeal : public Task
         PrepareMeal(std::string name, uint time, std::unique_ptr<T> meal);
         std::unique_ptr<T> getMeal();
         void setMeal(std::unique_ptr<T> meal);
-        std::string getTaskCategory() override;
 
         template <class U>
         friend std::ostream& operator<<(std::ostream &out, const PrepareMeal<U>& prepareMeal);

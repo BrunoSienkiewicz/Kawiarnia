@@ -1,5 +1,16 @@
 #include "task.h"
 
+Task::Task(std::string name, uint time, std::string taskCategory)
+{
+    setName(name);
+    setTime(time);
+    if (!isStringValueValid(taskCategory))
+    {
+        throw std::invalid_argument("Invalid task category");
+    }
+    this->taskCategory = taskCategory;
+}
+
 bool Task::isStringValueValid(std::string value)
 {
     return value.length() > 0;
@@ -13,6 +24,11 @@ std::string Task::getName()
 uint Task::getTime()
 {
     return this->time;
+}
+
+std::string Task::getTaskCategory()
+{
+    return this->taskCategory;
 }
 
 void Task::setName(std::string name)

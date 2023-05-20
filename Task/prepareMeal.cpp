@@ -1,18 +1,9 @@
 #include "prepareMeal.h"
 
 template <class T>
-PrepareMeal<T>::PrepareMeal(std::string name, uint time, std::unique_ptr<T> meal)
+PrepareMeal<T>::PrepareMeal(std::string name, uint time, std::unique_ptr<T> meal) : Task(name, time, "Prepare Meal")
 {
-    if (!isStringValueValid(name))
-        throw std::invalid_argument("Name is not valid");
-    if (time < 1)
-        throw std::invalid_argument("Time is not valid");
-    if (meal == nullptr)
-        throw std::invalid_argument("Meal is not valid");
-
-    this->name = name;
-    this->time = time;
-    this->meal = meal;
+    setMeal(std::move(meal));
 }
 
 template <class T>
@@ -65,12 +56,6 @@ template <class T>
 PrepareMeal<T>::~PrepareMeal()
 {
     std::cout << "Prepare Meal task finished" << std::endl;
-}
-
-template <class T>
-std::string PrepareMeal<T>::getTaskCategory()
-{
-    return "Prepare Meal";
 }
 
 template class PrepareMeal<Meal>;

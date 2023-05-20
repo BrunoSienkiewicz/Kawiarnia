@@ -1,6 +1,12 @@
 //Szymon Makuch
 
 #include "worker.h"
+#include <iostream>
+#include <string>
+#include <vector>
+#include <memory>
+#include <algorithm>
+#include "../Task/task.h"
 
 Worker::Worker(std::string nName, std::string nPosition, float nRate)
 {
@@ -82,6 +88,58 @@ void Worker::setSchedule(float nSchedule[7])
 float Worker::tip(float amount)
 {
     return amount;
+}
+
+void Worker::setTasks(std::vector<std::unique_ptr<Task>> tasks)
+{
+    this->tasks.clear();
+    for (auto &task : tasks)
+    {
+        this->addTask(std::move(task));
+    }
+}
+
+void Worker::addTask(std::unique_ptr<Task> task)
+{
+    if(task == nullptr)
+    {
+        throw std::invalid_argument("Task cannot be null");
+    }
+    tasks.push_back(std::move(task));
+}
+
+std::vector<std::unique_ptr<Task>> Worker::getTasks() const
+{
+    return std::move(tasks);
+}
+
+void Worker::removeTask(std::unique_ptr<Task> task)
+{
+    auto it = std::find(tasks.begin(), tasks.end(), task);
+    if (it != tasks.end())
+        tasks.erase(it);
+
+    throw std::invalid_argument("Task not found");
+}
+
+void Worker::removeTask(int index)
+{
+    if (index < 0 || index >= tasks.size())
+        throw std::invalid_argument("Index out of range");
+    tasks.erase(tasks.begin() + index);
+}
+
+void Worker::removeTask(std::string name)
+{
+    for (auto it = tasks.begin(); it != tasks.end(); ++it)
+    {
+        if ((*it)->getName() == name)
+        {
+            tasks.erase(it);
+            return;
+        }
+    }
+    throw std::invalid_argument("Task not found");
 }
 
 std::ostream& operator<<(std::ostream& os, const Worker& worker)

@@ -9,16 +9,18 @@ class Task
     protected:
         std::string name;
         uint time;
+        std::string taskCategory;
         bool isStringValueValid(std::string value);
         virtual void print(std::ostream &out) const=0;
         virtual void read(std::istream &in)=0;
     
     public:
+        Task(std::string name, uint time, std::string taskCategory);
         std::string getName();
         uint getTime();
+        std::string getTaskCategory();
         void setName(std::string name);
         void setTime(uint time);
-        virtual std::string getTaskCategory()=0;
 
         friend std::ostream& operator<<(std::ostream &out, const Task &task);
         friend std::istream& operator>>(std::istream &in, Task &task);
