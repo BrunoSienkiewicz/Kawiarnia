@@ -53,6 +53,11 @@ float Worker::getSalary() const
     return getHoursInWeek() * getRate();
 }
 
+bool Worker::getIsOccupied() const
+{
+    return isOccupied;
+}
+
 void Worker::setName(std::string nName)
 {
     if (nName.length() == 0)
@@ -83,6 +88,11 @@ void Worker::setSchedule(float nSchedule[7])
             throw ExceedingHoursException(nSchedule[i]);
         else
             schedule[i] = nSchedule[i];
+}
+
+void Worker::setIsOccupied(bool nIsOccupied)
+{
+    isOccupied = nIsOccupied;
 }
 
 float Worker::tip(float amount)

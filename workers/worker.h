@@ -14,6 +14,7 @@ class Worker
         float rate;
         float schedule[7];
         float sal;
+        bool isOccupied;
         std::vector<std::unique_ptr<Task>> tasks;
         // Nazwy zadań, które może wykonywać pracownik
         std::vector<std::string> possibleTasks;
@@ -27,12 +28,14 @@ class Worker
         virtual float getHoursInWeek() const;
         virtual float getSalary() const;
         virtual float tip(float amount);
+        virtual bool getIsOccupied() const;
         virtual std::vector<std::unique_ptr<Task>> getTasks() const;
         virtual std::vector<std::string> getPossibleTasks() const;
         void setName(std::string name);
         void setPosition(std::string position);
         void setRate(float rate);
         void setSchedule(float schedule[7]);
+        void setIsOccupied(bool isOccupied);
         void setTasks(std::vector<std::unique_ptr<Task>> tasks);
         void setPossibleTasks(std::vector<std::string> possibleTasks);
         void addTask(std::unique_ptr<Task> task);

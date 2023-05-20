@@ -1,25 +1,29 @@
 #include "task.h"
+#include "../Client/client.h"
+#include "../Client/order.h"
 #include "../menu.h"
-#include "../Meal/coffee.h"
-#include "../Meal/cake.h"
 
 
 class getOrder : public Task
 {
     private:
-        std::unique_ptr<Menu> menu;
-        std::unique_ptr<Meal> meal=nullptr;
-        std::string mealName;
-        template <class T>
-        std::unique_ptr<Meal> getMealFromOrder(T meal);
-    
-    public:
-        getOrder(std::string name, uint time, std::unique_ptr<Menu> menu, std::string mealName);
-        std::unique_ptr<Menu> getMenu();
-        void setMenu(std::unique_ptr<Menu> menu);
-        std::string getMealName(); 
-        void setMealName(std::string mealName);
-        std::unique_ptr<Meal> getMeal();
+        uint tableId;
+        std::unique_ptr<Client> client;
+        std::unique_ptr<Order> order;
 
-        std::string getTaskCategory() override;
+    public:
+        getOrder(std::string name, uint time, uint tableId, std::unique_ptr<Client> client, std::unique_ptr<Order> order);
+        uint getTableId();
+        std::unique_ptr<Client> getClient();
+        std::unique_ptr<Order> getTaskOrder();
+        void setClient(std::unique_ptr<Client> client);
+        void setOrder(std::unique_ptr<Order> order);
+        void setTableId(uint tableId);
+
+        void addMeal(std::unique_ptr<Meal> meal);
+        void addMeal(std::string mealName, uint mealQuantity, std::unique_ptr<Menu> menu);
+        void addMeal(uint index, uint mealQuantity, std::unique_ptr<Menu> menu);
+        void removeMeal(uint mealId);
+        void removeMeal(std::string mealName);
+        void createOrder(std::unique_ptr<Menu> menu);
 };
