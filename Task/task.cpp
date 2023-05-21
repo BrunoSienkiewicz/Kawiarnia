@@ -42,9 +42,9 @@ void Task::setName(std::string name)
 
 void Task::setTime(uint time)
 {
-    if (time < 1)
+    if (time < 0)
     {
-        throw std::invalid_argument("Time must be greater than 0");
+        throw std::invalid_argument("Time cannot be negative");
     }
     this->time = time;
 }

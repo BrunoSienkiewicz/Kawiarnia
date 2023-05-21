@@ -18,6 +18,7 @@ class Worker
         std::vector<std::unique_ptr<Task>> tasks;
         // Nazwy zadań, które może wykonywać pracownik
         std::vector<std::string> possibleTasks;
+        virtual void taskActions(std::unique_ptr<Task> task) = 0;
 
     public:
         Worker(std::string name, std::string position, float rate);
@@ -43,7 +44,7 @@ class Worker
         void removeTask(int index);
         void removeTask(std::string name);
 
-        virtual void doTask() = 0;
+        virtual void doTask();
 
         friend
         std::ostream& operator<<(std::ostream& os, const Worker& worker);

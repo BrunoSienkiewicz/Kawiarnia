@@ -26,6 +26,11 @@ bool Barista::isMealinPossibleMeals(uint mealId)
     return std::find(possibleMeals.begin(), possibleMeals.end(), mealId) != possibleMeals.end();
 }
 
+bool Barista::isMealinPossibleMeals(std::string mealName)
+{
+    return true;
+}
+
 float Barista::getSalary() const
 {
     float hours = Worker::getHoursInWeek();
@@ -52,14 +57,23 @@ void Barista::setPossibleMeals(std::vector<uint> possibleMeals)
     this->possibleMeals = possibleMeals;
 }
 
-void Barista::doTask()
+void Barista::taskActions(std::unique_ptr<Task> task)
 {
-    if (tasks.empty())
-        throw std::invalid_argument("No tasks to do");
-    std::unique_ptr<Task> task = std::move(tasks[0]);
-    std::cout << "Barista " << name << " is doing " << task->getName() << std::endl;
+    if (task->getTaskCategory() == "Prepare Meal")
+    {
+        auto prepareMeal = dynamic_cast<PrepareMeal<Meal>*>(task.get());
+        std::unique_ptr<Meal> meal = std::move(prepareMeal->getMeal());
 
-    tasks.erase(tasks.begin());
+        if (!isMealinPossibleMeals(meal->getName()))
+            throw std::invalid_argument("Barista cannot prepare this meal");
+
+        if (auto cake = dynamic_cast<Cake*>(meal.get()))
+            std::cout << "Barista " << name << " is preparing " << cake->getName() << std::endl;
+        if (auto coffee = dynamic_cast<Coffee*>(meal.get()))
+            std::cout << "Barista " << name << " is preparing " << coffee->getName() << std::endl;
+        if (auto tea = dynamic_cast<Tea*>(meal.get()))
+            std::cout << "Barista " << name << " is preparing " << tea->getName() << std::endl;
+    }
 }
 
 Barista::~Barista()
@@ -70,9 +84,4 @@ Barista::~Barista()
     }
 
     tasks.clear();
-}
-
-bool Barista::isMealinPossibleMeals(std::unique_ptr<Meal> meal)
-{
-    return true;
 }

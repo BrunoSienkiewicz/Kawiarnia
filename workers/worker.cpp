@@ -161,3 +161,21 @@ std::ostream& operator<<(std::ostream& os, const Worker& worker)
     os << "\n";
     return os;
 }
+
+void Worker::doTask()
+{
+    if (tasks.empty())
+        throw std::invalid_argument("No tasks to do");
+    std::unique_ptr<Task> task = std::move(tasks[0]);
+
+    auto it = std::find(possibleTasks.begin(), possibleTasks.end(), task->getTaskCategory());
+    if (it == possibleTasks.end())
+        throw std::invalid_argument("Worker cannot do this task");
+
+    taskActions(std::move(task));
+
+    task->setTime(task->getTime() - 1);
+
+    if (task->getTime() == 0)
+        tasks.erase(tasks.begin());
+}

@@ -14,6 +14,7 @@ class Barista : public Worker
         bool isMealinPossibleMeals(uint mealId);
         bool isMealinPossibleMeals(std::unique_ptr<Meal> meal);
         bool isMealinPossibleMeals(std::string mealName);
+        void taskActions(std::unique_ptr<Task> task) override;
     
     public:
         Barista(std::string name, float rate, float schedule[7], std::vector<uint> possibleMeals);
@@ -22,5 +23,4 @@ class Barista : public Worker
         void setPossibleMeals(std::vector<uint> possibleMeals);
         float getSalary() const override;
         float tip(float amount) override;
-        void doTask() override;
 };
