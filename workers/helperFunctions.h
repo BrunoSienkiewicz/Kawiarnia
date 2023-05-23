@@ -10,5 +10,6 @@
 #include "../menu.h"
 
 
-std::unique_ptr<Meal> inline retrieveMeal(std::unique_ptr<Menu> menu, uint mealId);
+std::unique_ptr<Meal> inline retrieveMeal(Menu menu, uint mealId);
 
+void inline customizeMeal(std::unique_ptr<Meal> meal);

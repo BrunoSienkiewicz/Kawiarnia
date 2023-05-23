@@ -4,9 +4,13 @@ Cook::Cook(std::string name, float rate) : Worker(name, "Cook", rate)
 {
     float schedule[7] = {0, 0, 0, 0, 0, 0, 0};
     Worker::setSchedule(schedule);
+    this->possibleTasks.push_back("Prepare Meal");
 }
 
-Cook::Cook(std::string name, float rate, float schedule[7]) : Worker(name, "Cook", rate, schedule){}
+Cook::Cook(std::string name, float rate, float schedule[7]) : Worker(name, "Cook", rate, schedule)
+{
+    this->possibleTasks.push_back("Prepare Meal");
+}
 
 float Cook::getSalary() const
 {

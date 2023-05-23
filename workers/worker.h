@@ -5,6 +5,7 @@
 #include "../exceptions/negativeHoursException.h"
 #include "../exceptions/exceedingHoursException.h"
 #include "../Task/task.h"
+#include "helperFunctions.h"
 
 class Worker
 {

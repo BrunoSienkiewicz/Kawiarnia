@@ -19,6 +19,7 @@ class PrepareMeal : public Task
     
     public:
         PrepareMeal(std::string name, uint time, std::unique_ptr<T> meal);
+        PrepareMeal(std::string name, uint time, std::unique_ptr<Meal> meal);
         std::unique_ptr<T> getMeal();
         void setMeal(std::unique_ptr<T> meal);
 

@@ -11,6 +11,7 @@ Barista::Barista(std::string name, float rate, float schedule[7], std::vector<ui
 {
     setPossibleMeals(std::move(possibleMeals));
     this->possibleTasks.push_back("Prepare meal");
+    this->possibleTasks.push_back("Get Order");
 }
 
 Barista::Barista(std::string name, float rate, std::vector<uint> possibleMeals) : Worker(name, "Barista", rate)
@@ -19,6 +20,7 @@ Barista::Barista(std::string name, float rate, std::vector<uint> possibleMeals) 
     float schedule[7] = {0, 0, 0, 0, 0, 0, 0};
     Worker::setSchedule(schedule);
     this->possibleTasks.push_back("Prepare meal");
+    this->possibleTasks.push_back("Get Order");
 }
 
 bool Barista::isMealinPossibleMeals(uint mealId)

@@ -55,6 +55,7 @@ void Manager::taskActions(std::unique_ptr<Task> task)
             }
         }
 
+        // Co zrobić jeśli żaden pracownik nie może wykonać zadania?
         if (assignTask->getTask() != nullptr)
         {
             auto newAssignTask = std::make_unique<AssignTask>(assignTask->getName(), assignTask->getTime(), std::move(assignTask->getTask()));

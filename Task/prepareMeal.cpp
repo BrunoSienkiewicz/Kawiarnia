@@ -7,15 +7,22 @@ PrepareMeal<T>::PrepareMeal(std::string name, uint time, std::unique_ptr<T> meal
 }
 
 template <class T>
+PrepareMeal<T>::PrepareMeal(std::string name, uint time, std::unique_ptr<Meal> meal) : Task(name, time, "Prepare Meal")
+{
+    std::unique_ptr<T> nMeal = dynamic_cast<std::unique_ptr<T>>(meal);
+    setMeal(std::move(meal));
+}
+
+template <class T>
 std::unique_ptr<T> PrepareMeal<T>::getMeal()
 {
-    return meal;
+    return std::move(meal);
 }
 
 template <class T>
 void PrepareMeal<T>::setMeal(std::unique_ptr<T> meal)
 {
-    this->meal = meal;
+    this->meal = std::move(meal);
 }
 
 template <class T>

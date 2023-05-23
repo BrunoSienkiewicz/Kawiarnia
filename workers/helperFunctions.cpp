@@ -1,12 +1,12 @@
 #include "helperFunctions.h"
 
 
-std::unique_ptr<Meal> inline retrieveMeal(std::unique_ptr<Menu> menu, uint mealId)
+std::unique_ptr<Meal> inline retrieveMeal(Menu menu, uint mealId)
 {
-    if (mealId > menu->getMeals().size())
+    if (mealId > menu.getMeals().size())
         throw std::invalid_argument("Meal with given id does not exist");
 
-    std::unique_ptr<Meal> meal = std::move(menu->getMeals()[mealId - 1]);
+    std::unique_ptr<Meal> meal = std::make_unique<Meal>(*menu.getMeals()[mealId - 1]);
 
     return meal;
 }
