@@ -2,10 +2,7 @@
 #include <string>
 #include <memory>
 #include <vector>
-<<<<<<< HEAD
 #include <algorithm>
-=======
->>>>>>> master
 #include "client.h"
 #include "../Meal/meal.h"
 #pragma once
@@ -17,7 +14,6 @@ class Order
         std::string name;
         std::unique_ptr<Client> client;
         std::vector<std::unique_ptr<Meal>> meals;
-<<<<<<< HEAD
         std::vector<std::unique_ptr<Meal>> mealsPrepared;
 
     public:
@@ -28,17 +24,6 @@ class Order
         void addMeal(Meal mealPrepared);
         void removeMeal(uint mealId);
         void removeMeal(Meal meal);
-=======
-
-    public:
-        Order(std::string name, std::unique_ptr<Client> client);
-        std::string getName();
-        std::unique_ptr<Client> getCustomer();
-        std::vector<std::unique_ptr<Meal>> getMeals();
-        void addMeal(std::unique_ptr<Meal> meal);
-        void removeMeal(uint mealId);
-        void removeMeal(std::unique_ptr<Meal> meal);
->>>>>>> master
         void removeMeal(std::string mealName);
 
         float getAmount();
