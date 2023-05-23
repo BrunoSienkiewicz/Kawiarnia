@@ -49,6 +49,23 @@ void Task::setTime(uint time)
     this->time = time;
 }
 
+void Task::print(std::ostream &out) const
+{
+    out << "Name: " << this->name << std::endl;
+    out << "Time: " << this->time << std::endl;
+    out << "Task category: " << this->taskCategory << std::endl;
+}
+
+void Task::read(std::istream &in)
+{
+    std::cout << "Name: ";
+    in >> this->name;
+    std::cout << "Time: ";
+    in >> this->time;
+    std::cout << "Task category: ";
+    in >> this->taskCategory;
+}
+
 std::ostream& operator<<(std::ostream &out, const Task &task)
 {
     task.print(out);

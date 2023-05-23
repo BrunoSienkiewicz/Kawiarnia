@@ -6,6 +6,7 @@
 #include "../Meal/coffee.h"
 #include "../Meal/cake.h"
 #include "../Meal/tea.h"
+#include "../Client/order.h"
 #pragma once
 
 
@@ -14,14 +15,17 @@ class PrepareMeal : public Task
 {
     private:
         std::unique_ptr<T> meal;
+        Order& order;
         void print(std::ostream &out) const override;
         void read(std::istream &in) override;
     
     public:
-        PrepareMeal(std::string name, uint time, std::unique_ptr<T> meal);
-        PrepareMeal(std::string name, uint time, std::unique_ptr<Meal> meal);
-        std::unique_ptr<T> getMeal();
-        void setMeal(std::unique_ptr<T> meal);
+        PrepareMeal(std::string name, uint time, T meal, Order& order);
+        PrepareMeal(std::string name, uint time, Meal meal, Order& order);
+        T& getMeal();
+        Order getOrder();
+        void setMeal(T meal);
+        void setOrder(Order& order);
 
         template <class U>
         friend std::ostream& operator<<(std::ostream &out, const PrepareMeal<U>& prepareMeal);

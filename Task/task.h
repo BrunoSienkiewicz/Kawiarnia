@@ -11,8 +11,8 @@ class Task
         uint time;
         std::string taskCategory;
         bool isStringValueValid(std::string value);
-        virtual void print(std::ostream &out) const=0;
-        virtual void read(std::istream &in)=0;
+        virtual void print(std::ostream &out) const;
+        virtual void read(std::istream &in);
     
     public:
         Task(std::string name, uint time, std::string taskCategory);

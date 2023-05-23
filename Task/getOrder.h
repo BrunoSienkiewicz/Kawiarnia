@@ -12,18 +12,17 @@ class getOrder : public Task
         std::unique_ptr<Order> order;
 
     public:
-        getOrder(std::string name, uint time, uint tableId, std::unique_ptr<Client> client, std::unique_ptr<Order> order);
+        getOrder(std::string name, uint time, uint tableId, Client client, Order order);
         uint getTableId();
-        std::unique_ptr<Client> getClient();
-        std::unique_ptr<Order> getTaskOrder();
-        void setClient(std::unique_ptr<Client> client);
-        void setOrder(std::unique_ptr<Order> order);
+        Client getClient();
+        Order getTaskOrder();
+        void setClient(Client client);
+        void setOrder(Order order);
         void setTableId(uint tableId);
 
-        void addMeal(std::unique_ptr<Meal> meal);
-        void addMeal(std::string mealName, uint mealQuantity, std::unique_ptr<Menu> menu);
-        void addMeal(uint index, uint mealQuantity, std::unique_ptr<Menu> menu);
+        void addMeal(Meal meal);
+        void addMeal(std::string mealName, uint mealQuantity, Menu menu);
+        void addMeal(uint index, uint mealQuantity, Menu menu);
         void removeMeal(uint mealId);
         void removeMeal(std::string mealName);
-        void createOrder(std::unique_ptr<Menu> menu);
 };

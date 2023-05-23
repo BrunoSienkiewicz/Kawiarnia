@@ -39,3 +39,24 @@ Meal::~Meal()
 {
     
 }
+
+std::string Meal::getMealCategory()
+{
+    return "Meal";
+}
+
+double Meal::calculatePrice() const
+{
+    return 0;
+}
+
+void Meal::print(std::ostream& os) const
+{
+    os << "Name: " << name << std::endl;
+}
+
+void Meal::read(std::istream& is)
+{
+    std::cout << "Name: ";
+    is >> name;
+}

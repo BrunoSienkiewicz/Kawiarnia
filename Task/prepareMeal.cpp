@@ -1,28 +1,30 @@
 #include "prepareMeal.h"
 
 template <class T>
-PrepareMeal<T>::PrepareMeal(std::string name, uint time, std::unique_ptr<T> meal) : Task(name, time, "Prepare Meal")
+PrepareMeal<T>::PrepareMeal(std::string name, uint time, T meal, Order& order) : Task(name, time, "Prepare Meal")
 {
-    setMeal(std::move(meal));
+    setMeal(meal);
+    setOrder(order);
 }
 
 template <class T>
-PrepareMeal<T>::PrepareMeal(std::string name, uint time, std::unique_ptr<Meal> meal) : Task(name, time, "Prepare Meal")
+PrepareMeal<T>::PrepareMeal(std::string name, uint time, Meal meal, Order& order) : Task(name, time, "Prepare Meal")
 {
-    std::unique_ptr<T> nMeal = dynamic_cast<std::unique_ptr<T>>(meal);
-    setMeal(std::move(meal));
+    T nMeal = dynamic_cast<T>(meal);
+    setOrder(order);
+    setMeal(nMeal);
 }
 
 template <class T>
-std::unique_ptr<T> PrepareMeal<T>::getMeal()
+T& PrepareMeal<T>::getMeal()
 {
-    return std::move(meal);
+    return *this->meal;
 }
 
 template <class T>
-void PrepareMeal<T>::setMeal(std::unique_ptr<T> meal)
+void PrepareMeal<T>::setMeal(T meal)
 {
-    this->meal = std::move(meal);
+    this->meal = std::make_unique<T>(meal);
 }
 
 template <class T>
@@ -62,6 +64,7 @@ std::istream& operator>>(std::istream &in, PrepareMeal<T> &prepareMeal)
 template <class T>
 PrepareMeal<T>::~PrepareMeal()
 {
+    order.addMeal(*this->meal);
     std::cout << "Prepare Meal task finished" << std::endl;
 }
 

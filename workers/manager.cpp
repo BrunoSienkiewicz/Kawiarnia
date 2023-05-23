@@ -1,17 +1,17 @@
 #include "manager.h"
 #include "../Task/assignTask.h"
 
-Manager::Manager(std::string name, float rate, std::vector<std::unique_ptr<Worker>> subjectWorkers) : Worker(name, "Manager", rate)
+Manager::Manager(std::string name, float rate, std::vector<Worker> subjectWorkers) : Worker(name, "Manager", rate)
 {
     float schedule[7] = {0, 0, 0, 0, 0, 0, 0};
     Worker::setSchedule(schedule);
-    setSubjectWorkers(std::move(subjectWorkers));
+    setSubjectWorkers(subjectWorkers);
     this->possibleTasks.push_back("Assign task");
 }
 
-Manager::Manager(std::string name, float rate, float schedule[7], std::vector<std::unique_ptr<Worker>> subjectWorkers) : Worker(name, "Manager", rate, schedule)
+Manager::Manager(std::string name, float rate, float schedule[7], std::vector<Worker> subjectWorkers) : Worker(name, "Manager", rate, schedule)
 {
-    setSubjectWorkers(std::move(subjectWorkers));
+    setSubjectWorkers(subjectWorkers);
     this->possibleTasks.push_back("Assign task");
 }
 
@@ -24,44 +24,44 @@ float Manager::getSalary() const
     return basicSalary;
 }
 
-std::vector<std::unique_ptr<Worker>> Manager::getSubjectWorkers() const
+std::vector<Worker> Manager::getSubjectWorkers() const
 {
-    return subjectWorkers;
+    std::vector<Worker> workers;
+    for (auto &worker : subjectWorkers)
+        workers.push_back(*worker);
+    return workers;
 }
 
-void Manager::setSubjectWorkers(std::vector<std::unique_ptr<Worker>> subjectWorkers)
+void Manager::setSubjectWorkers(std::vector<Worker> subjectWorkers)
 {
     if (subjectWorkers.empty())
         throw std::invalid_argument("Subject workers cannot be empty");
-    this->subjectWorkers = subjectWorkers;
+
+    for (auto &worker : subjectWorkers)
+        this->subjectWorkers.push_back(std::make_unique<Worker>(worker));
 }
 
-void Manager::taskActions(std::unique_ptr<Task> task)
+void Manager::taskActions(Task& task)
 {
-    if (task->getName() == "Assign task")
+    if (task.getName() == "Assign task")
     {
-        auto assignTask = dynamic_cast<AssignTask*>(task.get());
-        for (auto &worker : subjectWorkers)
-        {
-            if (!worker->getIsOccupied())
-            {
-                auto it = std::find_if(possibleTasks.begin(), possibleTasks.end(), [assignTask](std::string taskCategory) { return taskCategory == assignTask->getTask()->getTaskCategory(); });
-                if (it == possibleTasks.end())
-                    continue;
-                
-                std::unique_ptr<Task> task = std::move(assignTask->getTask());
-                worker->addTask(std::move(task));
-                break;
-            }
-        }
-
-        // Co zrobić jeśli żaden pracownik nie może wykonać zadania?
-        if (assignTask->getTask() != nullptr)
-        {
-            auto newAssignTask = std::make_unique<AssignTask>(assignTask->getName(), assignTask->getTime(), std::move(assignTask->getTask()));
-            addTask(std::move(newAssignTask));
-        }
     }
     else
         throw std::invalid_argument("Task not found");
+}
+
+void Manager::assignTask(Task task)
+{
+    for (auto &worker : subjectWorkers)
+    {
+        if (!worker->getIsOccupied())
+        {
+            auto it = std::find_if(possibleTasks.begin(), possibleTasks.end(), [&task](std::string taskCategory) { return taskCategory == task.getTaskCategory(); });
+            if (it == possibleTasks.end())
+                continue;
+            
+            worker->addTask(task);
+            break;
+        }
+    }
 }

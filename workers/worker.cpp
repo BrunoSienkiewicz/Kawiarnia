@@ -100,30 +100,32 @@ float Worker::tip(float amount)
     return amount;
 }
 
-void Worker::setTasks(std::vector<std::unique_ptr<Task>> tasks)
+void Worker::setTasks(std::vector<Task> tasks)
 {
     this->tasks.clear();
     for (auto &task : tasks)
     {
-        this->addTask(std::move(task));
+        this->addTask(task);
     }
 }
 
-void Worker::addTask(std::unique_ptr<Task> task)
+void Worker::addTask(Task task)
 {
-    if(task == nullptr)
+    std::unique_ptr<Task> ptr(new Task(task.getName(), task.getTime(), task.getTaskCategory()));
+    tasks.push_back(std::move(ptr));
+}
+
+std::vector<Task> Worker::getTasks() const
+{
+    std::vector<Task> tasks;
+    for (auto &task : this->tasks)
     {
-        throw std::invalid_argument("Task cannot be null");
+        tasks.push_back(*task);
     }
-    tasks.push_back(std::move(task));
+    return tasks;
 }
 
-std::vector<std::unique_ptr<Task>> Worker::getTasks() const
-{
-    return std::move(tasks);
-}
-
-void Worker::removeTask(std::unique_ptr<Task> task)
+void Worker::removeTask(Task task)
 {
     auto it = std::find(tasks.begin(), tasks.end(), task);
     if (it != tasks.end())
@@ -166,16 +168,22 @@ void Worker::doTask()
 {
     if (tasks.empty())
         throw std::invalid_argument("No tasks to do");
-    std::unique_ptr<Task> task = std::move(tasks[0]);
+    Task& task = *tasks[0];
 
-    auto it = std::find(possibleTasks.begin(), possibleTasks.end(), task->getTaskCategory());
+    auto it = std::find(possibleTasks.begin(), possibleTasks.end(), task.getTaskCategory());
     if (it == possibleTasks.end())
         throw std::invalid_argument("Worker cannot do this task");
 
-    taskActions(std::move(task));
+    task.setTime(task.getTime() - 1);
+    taskActions(task);
 
-    task->setTime(task->getTime() - 1);
-
-    if (task->getTime() == 0)
+    if (task.getTime() == 0)
+    {
         tasks.erase(tasks.begin());
+    }
+}
+
+void Worker::taskActions(Task& task)
+{
+    std::cout << "Worker " << getName() << " is doing task " << task.getName() << std::endl;
 }

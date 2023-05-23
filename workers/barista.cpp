@@ -9,14 +9,14 @@
 
 Barista::Barista(std::string name, float rate, float schedule[7], std::vector<uint> possibleMeals) : Worker(name, "Barista", rate, schedule)
 {
-    setPossibleMeals(std::move(possibleMeals));
+    setPossibleMeals(possibleMeals);
     this->possibleTasks.push_back("Prepare meal");
     this->possibleTasks.push_back("Get Order");
 }
 
 Barista::Barista(std::string name, float rate, std::vector<uint> possibleMeals) : Worker(name, "Barista", rate)
 {
-    setPossibleMeals(std::move(possibleMeals));
+    setPossibleMeals(possibleMeals);
     float schedule[7] = {0, 0, 0, 0, 0, 0, 0};
     Worker::setSchedule(schedule);
     this->possibleTasks.push_back("Prepare meal");
@@ -59,22 +59,33 @@ void Barista::setPossibleMeals(std::vector<uint> possibleMeals)
     this->possibleMeals = possibleMeals;
 }
 
-void Barista::taskActions(std::unique_ptr<Task> task)
+void Barista::taskActions(Task& task)
 {
-    if (task->getTaskCategory() == "Prepare Meal")
+    if (task.getTaskCategory() == "Prepare Meal")
     {
-        auto prepareMeal = dynamic_cast<PrepareMeal<Meal>*>(task.get());
-        std::unique_ptr<Meal> meal = std::move(prepareMeal->getMeal());
+        PrepareMeal<Meal>& prepareMeal = dynamic_cast<PrepareMeal<Meal>&>(task);
+        Meal& meal = prepareMeal.getMeal();
 
-        if (!isMealinPossibleMeals(meal->getName()))
+        if (!isMealinPossibleMeals(meal.getName()))
             throw std::invalid_argument("Barista cannot prepare this meal");
 
-        if (auto cake = dynamic_cast<Cake*>(meal.get()))
-            std::cout << "Barista " << name << " is preparing " << cake->getName() << std::endl;
-        if (auto coffee = dynamic_cast<Coffee*>(meal.get()))
-            std::cout << "Barista " << name << " is preparing " << coffee->getName() << std::endl;
-        if (auto tea = dynamic_cast<Tea*>(meal.get()))
-            std::cout << "Barista " << name << " is preparing " << tea->getName() << std::endl;
+        if (meal.getMealCategory() == "Coffee")
+        {
+            Coffee& coffee = dynamic_cast<Coffee&>(meal);
+            std::cout << "Preparing coffee: " << coffee.getName() << std::endl;
+        }
+        else if (meal.getMealCategory() == "Cake")
+        {
+            Cake& cake = dynamic_cast<Cake&>(meal);
+            std::cout << "Preparing cake: " << cake.getName() << std::endl;
+        }
+        else if (meal.getMealCategory() == "Tea")
+        {
+            Tea& tea = dynamic_cast<Tea&>(meal);
+            std::cout << "Preparing tea: " << tea.getName() << std::endl;
+        }
+        else
+            throw std::invalid_argument("Meal not found");
     }
 }
 

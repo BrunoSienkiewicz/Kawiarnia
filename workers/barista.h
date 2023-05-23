@@ -12,9 +12,9 @@ class Barista : public Worker
         // indeksy z menu posiłków, które może przygotować barista
         std::vector<uint> possibleMeals;
         bool isMealinPossibleMeals(uint mealId);
-        bool isMealinPossibleMeals(std::unique_ptr<Meal> meal);
+        bool isMealinPossibleMeals(Meal& meal);
         bool isMealinPossibleMeals(std::string mealName);
-        void taskActions(std::unique_ptr<Task> task) override;
+        void taskActions(Task& task) override;
     
     public:
         Barista(std::string name, float rate, float schedule[7], std::vector<uint> possibleMeals);
